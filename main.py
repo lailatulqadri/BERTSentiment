@@ -14,7 +14,7 @@ def predict_sentiment(model, tokenizer, text):
     logits = outputs.logits
     probabilities = torch.softmax(logits, dim=1)
     predicted_class = torch.argmax(probabilities, dim=1).item()
-    sentiment = 'positive' if predicted_class == 1 else 'negative'
+    sentiment = 'positive' if predicted_class > 0 else 'negative'
     return sentiment
 
 
