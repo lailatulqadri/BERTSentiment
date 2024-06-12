@@ -2,7 +2,7 @@ import streamlit as st
 import torch
 from transformers import BertForSequenceClassification, BertTokenizer
 
-@st.cache_resource
+@st.data
 def load_model():
     model = BertForSequenceClassification.from_pretrained('bert-base-uncased')
     tokenizer = BertTokenizerFast.from_pretrained('bert-base-uncased')
