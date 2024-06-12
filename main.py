@@ -1,6 +1,5 @@
 import streamlit as st
-import torch
-from transformers import BertForSequenceClassification, BertTokenizer
+from transformers import BertForSequenceClassification, BertTokenizerFast
 
 @st.cache_resource
 def load_model():
@@ -11,12 +10,8 @@ def load_model():
 def predict_sentiment(model, tokenizer, text):
     inputs = tokenizer(text, return_tensors='pt')
     outputs = model(**inputs)
-    logits = outputs.logits
-    probabilities = torch.softmax(logits, dim=1)
-    predicted_class = torch.argmax(probabilities, dim=1).item()
-    sentiment = 'positive' if predicted_class > 0 else 'negative'
-    return probabilities
-
+    probs = outputs.logits.softmax(dim=1).detach().numpy()[0]
+    return 'Positive' if probs[1] > probs[0] else 'Negative'
 
 model, tokenizer = load_model()
 
